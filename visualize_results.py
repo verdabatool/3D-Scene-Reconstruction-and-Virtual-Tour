@@ -5,14 +5,14 @@ import os
 
 def visualize_week3_results():
     """Visualize your complete Week 3 reconstruction"""
-    print("🎉 WEEK 3: 3D Scene Reconstruction Visualization")
+    print("WEEK 3: 3D Scene Reconstruction Visualization")
     print("=" * 60)
     
     # Your reconstruction files
     files = {
-        "week3_initial.ply": {"color": [0.1, 0.1, 0.8], "name": "INITIAL (2 cameras)"},
-        "week3_before_ba.ply": {"color": [0.8, 0.1, 0.1], "name": "BEFORE Bundle Adjustment"},
-        "week3_after_ba.ply": {"color": [0.1, 0.8, 0.1], "name": "AFTER Bundle Adjustment - FINAL"}
+        "outputs/week3_initial.ply": {"color": [0.1, 0.1, 0.8], "name": "INITIAL (2 cameras)"},
+        "outputs/week3_before_ba.ply": {"color": [0.8, 0.1, 0.1], "name": "BEFORE Bundle Adjustment"},
+        "outputs/week3_after_ba.ply": {"color": [0.1, 0.8, 0.1], "name": "AFTER Bundle Adjustment - FINAL"}
     }
     
     all_geometries = []
