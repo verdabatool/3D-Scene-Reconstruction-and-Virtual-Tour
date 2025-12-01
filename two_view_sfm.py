@@ -212,6 +212,30 @@ def two_view_strict(img1_path, img2_path, ply_out='outputs/reconstruction_two_vi
         "K": K, "R": R_final, "t": t_final, "points": pts3d_valid, "colors": colors,
         "matches": matches
     }
+    
+def save_canonical_views_matplotlib(pts3d, colors, out_dir="outputs"):
+    os.makedirs(out_dir, exist_ok=True)
+
+    views = {
+        "front_view.png": dict(elev=0, azim=0),
+        "side_view.png":  dict(elev=0, azim=90),
+        "top_view.png":   dict(elev=90, azim=0),
+    }
+
+    for name, cam in views.items():
+        fig = plt.figure(figsize=(6,6))
+        ax = fig.add_subplot(111, projection='3d')
+        ax.scatter(
+            pts3d[:,0], pts3d[:,1], pts3d[:,2],
+            c=colors / 255.0, s=2
+        )
+
+        ax.view_init(elev=cam["elev"], azim=cam["azim"])
+        ax.set_axis_off()
+        ax.set_box_aspect([1,1,1])
+        plt.savefig(os.path.join(out_dir, name), dpi=200, bbox_inches="tight")
+        plt.close(fig)
+
 
 if __name__ == "__main__":
     p = argparse.ArgumentParser()
@@ -224,6 +248,16 @@ if __name__ == "__main__":
     p.add_argument("--visualize", action="store_true", help="show 3D scatter plot")
     args = p.parse_args()
 
-    two_view_strict(args.img1, args.img2, ply_out=args.out, ratio_thresh=args.ratio,
-                    ransac_thresh=args.ransac_thresh, show_matches=args.show_matches,
-                    visualize=args.visualize)
+    result = two_view_strict(
+    args.img1,
+    args.img2,
+    ply_out=args.out,
+    ratio_thresh=args.ratio,
+    ransac_thresh=args.ransac_thresh,
+    show_matches=args.show_matches,
+    visualize=args.visualize
+)
+
+save_canonical_views_matplotlib(result["points"], result["colors"])
+
+    

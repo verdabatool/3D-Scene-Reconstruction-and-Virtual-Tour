@@ -1,5 +1,5 @@
 """
-week3_guaranteed_success.py
+week3.py
 
 Week 3: Multi-View SfM with Refinement (complete script)
 Saves outputs into the pre-existing 'outputs' directory.
@@ -324,7 +324,7 @@ class SFMPipeline:
     # -------------------------
     # Fast bundle adjustment (subset)
     # -------------------------
-    def run_fast_bundle_adjustment(self, max_points=200):
+    def run_fast_bundle_adjustment(self, max_points=50):
         print("[BA] collecting observations")
         point_visibility = {}
         for tid, obs in self.tracks.items():
@@ -383,7 +383,7 @@ class SFMPipeline:
             initial_rms = float('nan')
         print(f"[BA] initial RMS (approx): {initial_rms:.3f}")
         try:
-            res = least_squares(residuals, x0, method='dogbox', verbose=0, max_nfev=100, ftol=1e-4, xtol=1e-4)
+            res = least_squares(residuals, x0, method='lm', verbose=0, max_nfev=20, ftol=1e-4, xtol=1e-4)
             cam_opt = res.x[:n_cams*6].reshape((n_cams,6))
             pts_opt = res.x[n_cams*6:].reshape((n_pts,3))
             # apply camera updates
@@ -525,7 +525,7 @@ class SFMPipeline:
         self.save_camera_poses(os.path.join(self.outputs_dir, "week3_cameras_before_ba.json"))
 
         # bundle adjustment refinement
-        cams_ba, pts_ba = self.run_fast_bundle_adjustment(max_points=200)
+        cams_ba, pts_ba = self.run_fast_bundle_adjustment(max_points=50)
         self.cameras = cams_ba
         self.points3D = pts_ba
 
