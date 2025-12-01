@@ -1,5 +1,5 @@
 """
-week3_guaranteed_success.py
+week3.py
 
 Week 3: Multi-View SfM with Refinement (complete script)
 Saves outputs into the pre-existing 'outputs' directory.
