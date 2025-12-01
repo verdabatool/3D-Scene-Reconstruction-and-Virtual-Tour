@@ -383,7 +383,7 @@ class SFMPipeline:
             initial_rms = float('nan')
         print(f"[BA] initial RMS (approx): {initial_rms:.3f}")
         try:
-            res = least_squares(residuals, x0, method='lm', verbose=0, max_nfev=20, ftol=1e-4, xtol=1e-4)
+            res = least_squares(residuals, x0, method='trf', verbose=2, max_nfev=20, ftol=1e-4, xtol=1e-4)
             cam_opt = res.x[:n_cams*6].reshape((n_cams,6))
             pts_opt = res.x[n_cams*6:].reshape((n_pts,3))
             # apply camera updates
